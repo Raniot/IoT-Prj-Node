@@ -12,8 +12,8 @@ rawCapture = PiRGBArray(camera, size=(640, 480))
 
 # initialize the frame dimensions (we'll set them as soon as we read
 # the first frame from the video)
-W = None
-H = None
+W = 640
+H = 480
  
 # allow the camera to warmup
 time.sleep(0.1)
@@ -25,9 +25,6 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	image = frame.array
  
 	# show the frame
-
-	if W is None or H is None:
-		(H, W) = frame.shape[:2]
 
 	cv2.line(frame, (0, H // 2), (W, H // 2), (0, 255, 255), 2)
 	cv2.imshow("Frame", image)
