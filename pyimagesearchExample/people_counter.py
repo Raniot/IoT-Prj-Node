@@ -98,12 +98,12 @@ while True:
 	# grab the next frame and handle if we are reading from either
 	# VideoCapture or VideoStream
 	frame = vs.read()
-	frame = frame[1] if args.get("input", False) else frame
+	# frame = frame[1] if args.get("input", False) else frame
 
 	# if we are viewing a video and we did not grab a frame then we
 	# have reached the end of the video
-	if args["input"] is not None and frame is None:
-		break
+	# if args["input"] is not None and frame is None:
+		# break
 
 	# resize the frame to have a maximum width of 500 pixels (the
 	# less data we have, the faster we can process it), then convert
