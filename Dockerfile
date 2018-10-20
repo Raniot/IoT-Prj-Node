@@ -1,3 +1,2 @@
-FROM sgtwilko/rpi-raspbian-opencv:latest
-
+FROM raniot/rpiopencv:latest
 COPY . .
