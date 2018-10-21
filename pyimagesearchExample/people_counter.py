@@ -108,7 +108,7 @@ while True:
 	# resize the frame to have a maximum width of 500 pixels (the
 	# less data we have, the faster we can process it), then convert
 	# the frame from BGR to RGB for dlib
-	frame = imutils.resize(frame, width=500)
+	frame = imutils.resize(frame, width=300)
 	rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
 	# if the frame dimensions are empty, set them
@@ -117,10 +117,10 @@ while True:
 
 	# if we are supposed to be writing a video to disk, initialize
 	# the writer
-	if args["output"] is not None and writer is None:
-		fourcc = cv2.VideoWriter_fourcc(*"MJPG")
-		writer = cv2.VideoWriter(args["output"], fourcc, 30,
-			(W, H), True)
+	# if args["output"] is not None and writer is None:
+	# 	fourcc = cv2.VideoWriter_fourcc(*"MJPG")
+	# 	writer = cv2.VideoWriter(args["output"], fourcc, 30,
+	# 		(W, H), True)
 
 	# initialize the current status along with our list of bounding
 	# box rectangles returned by either (1) our object detector or
@@ -258,6 +258,7 @@ while True:
 		("Up", totalUp),
 		("Down", totalDown),
 		("Status", status),
+		("Total Frames", str(totalFrames)),
 	]
 
 	# loop over the info tuples and draw them on our frame
@@ -267,8 +268,8 @@ while True:
 			cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
 
 	# check to see if we should write the frame to disk
-	if writer is not None:
-		writer.write(frame)
+	# if writer is not None:
+	# 	writer.write(frame)
 
 	# show the output frame
 	cv2.imshow("Frame", frame)
@@ -289,8 +290,8 @@ print("[INFO] elapsed time: {:.2f}".format(fps.elapsed()))
 print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
 
 # check to see if we need to release the video writer pointer
-if writer is not None:
-	writer.release()
+# if writer is not None:
+# 	writer.release()
 
 # if we are not using a video file, stop the camera video stream
 # if not args.get("input", False):
