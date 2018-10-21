@@ -60,7 +60,7 @@ net = cv2.dnn.readNetFromCaffe(args["prototxt"], args["model"])
 	# print("[INFO] opening video file...")
 	# vs = cv2.VideoCapture(args["input"])
 
-framerate=32
+framerate=10
 resolution = (640, 480)
 # initialize the picamera stream and allow the camera
 # sensor to warmup
