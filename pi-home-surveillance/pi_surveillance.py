@@ -42,8 +42,8 @@ rawCapture = PiRGBArray(camera, size=[640, 480])
 print("[INFO] warming up...")
 time.sleep(2.5)
 avg = None
-lastUploaded = datetime.datetime.now()
-motionCounter = 0
+#lastUploaded = datetime.datetime.now()
+#motionCounter = 0
 
 # capture frames from the camera
 for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
