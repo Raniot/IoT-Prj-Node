@@ -141,7 +141,7 @@ while True:
 		# loop over the contours
 		for c in cnts:
 			# if the contour is too small, ignore it
-			if cv2.contourArea(c) < 8000:
+			if cv2.contourArea(c) < 5000:
 				continue
 
 			# compute the bounding box for the contour, draw it on the frame,
@@ -149,16 +149,16 @@ while True:
 			(x, y, w, h) = cv2.boundingRect(c)
 			cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
-		# construct a dlib rectangle object from the bounding
-		# box coordinates and then start the dlib correlation
-		# tracker
-		tracker = dlib.correlation_tracker()
-		rect = dlib.rectangle(x, y, x+w, y+h)
-		tracker.start_track(gray, rect)
+			# construct a dlib rectangle object from the bounding
+			# box coordinates and then start the dlib correlation
+			# tracker
+			tracker = dlib.correlation_tracker()
+			rect = dlib.rectangle(x, y, x+w, y+h)
+			tracker.start_track(gray, rect)
 
-		# add the tracker to our list of trackers so we can
-		# utilize it during skip frames
-		trackers.append(tracker)
+			# add the tracker to our list of trackers so we can
+			# utilize it during skip frames
+			trackers.append(tracker)
 		# convert the frame to a blob and pass the blob through the
 		# network and obtain the detections
 		# blob = cv2.dnn.blobFromImage(frame, 0.007843, (W, H), 127.5)
