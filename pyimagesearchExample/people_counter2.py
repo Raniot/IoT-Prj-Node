@@ -111,6 +111,9 @@ while True:
 
 		frame = vs.read()
 
+		
+		if W is None or H is None:
+			(H, W) = frame.shape[:2]
 	# resize the frame, convert it to grayscale, and blur it
 		frame = imutils.resize(frame, width=500)
 		gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
