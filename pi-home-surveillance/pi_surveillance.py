@@ -83,7 +83,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	# loop over the contours
 	for c in cnts:
 		# if the contour is too small, ignore it
-		if cv2.contourArea(c) < min_area:
+		if cv2.contourArea(c) < 5000:
 			continue
 
 		# compute the bounding box for the contour, draw it on the frame,
