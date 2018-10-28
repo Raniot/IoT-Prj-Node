@@ -18,7 +18,7 @@ import cv2
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
-framerate=2
+framerate=20
 resolution = (640, 480)
 
 trackers = []
@@ -44,7 +44,7 @@ while True:
     image = imutils.resize(image, width=min(400, image.shape[1]))
     if image is None: continue
     if totalFrames % skip_frames == 0:
-        print("Trting to detect")
+        print("Trying to detect")
 
         # orig = image.copy()
 
@@ -71,12 +71,6 @@ while True:
             # add the tracker to our list of trackers so we can
             # utilize it during skip frames
             trackers.append(tracker)
-
-        # show the output images
-        # cv2.imshow("Before NMS", orig)
-        cv2.imshow('Frame',image)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
         
     else:
 		# loop over the trackers
@@ -99,6 +93,11 @@ while True:
             # rects1.append((startX, startY, endX, endY))
             cv2.rectangle(image,(startX,startY),(endX,endY),(255,0,0),2)
 
+    # show the output images
+    # cv2.imshow("Before NMS", orig)
+    cv2.imshow('Frame',image)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
     if totalFrames % 5 == 0:
         print("Total frames: " + str(totalFrames))
     totalFrames += 1
