@@ -46,7 +46,7 @@ print("[INFO] warming up...")
 time.sleep(2.5)
 #avg = None
 totalFrames = 0
-skip_frames = 240
+skip_frames = 40
 
 #lastUploaded = datetime.datetime.now()
 #motionCounter = 0
