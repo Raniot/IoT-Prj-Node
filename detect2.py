@@ -59,7 +59,7 @@ while True:
 
         # show the output images
         # cv2.imshow("Before NMS", orig)
-        cv2.imshow('detect',frame)
+        cv2.imshow('detect',image)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
     if totalFrames % 5 == 0:
