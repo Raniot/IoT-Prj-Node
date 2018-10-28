@@ -42,7 +42,7 @@ if __name__ == '__main__':
     hog.setSVMDetector( cv.HOGDescriptor_getDefaultPeopleDetector() )
 
     default = ['cam.jpg'] if len(sys.argv[1:]) == 0 else []
-    default=imutils.resize(default, width=500)
+    
 
     for fn in it.chain(*map(glob, default + sys.argv[1:])):
         print(fn, ' - ',)
@@ -55,6 +55,7 @@ if __name__ == '__main__':
             print('loading error')
             continue
 
+        img=imutils.resize(img, width=500)
         found, w = hog.detectMultiScale(img, winStride=(8,8), padding=(32,32), scale=1.05)
         found_filtered = []
         for ri, r in enumerate(found):
