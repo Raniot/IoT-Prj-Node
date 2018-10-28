@@ -9,21 +9,14 @@ from imutils.video.pivideostream import PiVideoStream
 from imutils import paths
 import numpy as np
 import time
-import argparse
 import imutils
 import cv2
 
-# construct the argument parse and parse the arguments
-ap = argparse.ArgumentParser()
-ap.add_argument("-i", "--images", required=True, help="path to images directory")
-args = vars(ap.parse_args())
 
 # initialize the HOG descriptor/person detector
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
-# loop over the image paths
-imagePaths = list(paths.list_images(args["images"]))
 framerate=10
 resolution = (640, 480)
 
