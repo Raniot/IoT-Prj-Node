@@ -59,8 +59,12 @@ while True:
 
         # show the output images
         # cv2.imshow("Before NMS", orig)
-        cv2.imshow("Frame", image)
-        cv2.waitKey(0)
+        cv2.imshow('detect',frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
     if totalFrames % 5 == 0:
         print("Total frames: " + str(totalFrames))
     totalFrames += 1
+
+vs.release()
+cv2.destroyAllWindows()
