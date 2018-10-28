@@ -41,7 +41,7 @@ vs = stream
 fullbody_cascade = cv2.CascadeClassifier('haarcascade_fullbody.xml')
 # loop over frames from the video stream
 while True:
-    ret, frame = vs.read()
+    frame = vs.read()
     frame=imutils.resize(frame, width=min(100, frame.shape[1]))
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     upper=fullbody_cascade.detectMultiScale(gray,1.1,1)
