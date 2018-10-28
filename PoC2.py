@@ -52,3 +52,6 @@ while True:
     cv2.imshow('detect',frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
+
+vs.release() 
+cv2.destroyAllWindows()
