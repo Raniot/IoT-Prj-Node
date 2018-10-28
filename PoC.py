@@ -95,7 +95,7 @@ while True:
         frame = imutils.resize(frame, width=500)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-        fullbodies = fullbody_cascade.detectMultiScale(gray, 1.3, 5)
+        fullbodies = fullbody_cascade.detectMultiScale(gray, 1.1, 1)
         for (x,y,w,h) in fullbodies:
             print("Body Found at xStart:" + str(x) + " yStart: " + str(y) + " xEnd: "+ str(x+w) + " yEnd: " + str(y+h))
             cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)
@@ -139,7 +139,7 @@ while True:
 	# draw a horizontal line in the center of the frame -- once an
 	# object crosses this line we will determine whether they were
 	# moving 'up' or 'down'
-    
+
     # cv2.line(frame, (0, H // 2), (W, H // 2), (0, 255, 255), 2)
 
 	# use the centroid tracker to associate the (1) old object
