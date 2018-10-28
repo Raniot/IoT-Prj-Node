@@ -55,8 +55,6 @@ skip_frames = 40
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
-trackers = []
-
 # capture frames from the camera
 for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
 
@@ -66,7 +64,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	image = imutils.resize(image, width=min(400, image.shape[1]))
 	if totalFrames % skip_frames == 0:
 		print("Trying to detect")
-
+		trackers = []
 		# orig = image.copy()
 
 		# detect people in the image
