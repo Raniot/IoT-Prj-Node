@@ -42,7 +42,7 @@ if __name__ == '__main__':
     hog.setSVMDetector( cv.HOGDescriptor_getDefaultPeopleDetector() )
 
     default = ['cam.jpg'] if len(sys.argv[1:]) == 0 else []
-    default=imutils.resize(frame, width=500)
+    default=imutils.resize(default, width=500)
 
     for fn in it.chain(*map(glob, default + sys.argv[1:])):
         print(fn, ' - ',)
