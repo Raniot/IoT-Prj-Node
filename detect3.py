@@ -62,6 +62,8 @@ while True:
             tracker = dlib.correlation_tracker()
             rect = dlib.rectangle(xA, yA, xB, yB)
             tracker.start_track(image, rect)
+            # add the tracker to our list of trackers so we can
+            # utilize it during skip frames
             trackers.append(tracker)
 
         # show the output images
@@ -69,10 +71,7 @@ while True:
         cv2.imshow('Frame',image)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-
-        # add the tracker to our list of trackers so we can
-        # utilize it during skip frames
-        trackers.append(tracker)
+        
     else:
 		# loop over the trackers
         for tracker in trackers:
