@@ -32,6 +32,7 @@ fullbody_cascade = cv2.CascadeClassifier('haarcascade_fullbody.xml')
 while True:
 
     if totalFrames % skip_frames == 0:
+        print("Trting to detect")
         # load the image and resize it to (1) reduce detection time
         # and (2) improve detection accuracy
         image = vs.read()
@@ -60,4 +61,6 @@ while True:
         # cv2.imshow("Before NMS", orig)
         cv2.imshow("Frame", image)
         cv2.waitKey(0)
+    if totalFrames % 5 == 0:
+        print("Total frames: " + str(totalFrames))
     totalFrames += 1
