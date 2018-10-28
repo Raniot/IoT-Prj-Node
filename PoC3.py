@@ -41,7 +41,7 @@ if __name__ == '__main__':
     hog = cv.HOGDescriptor()
     hog.setSVMDetector( cv.HOGDescriptor_getDefaultPeopleDetector() )
 
-    default = ['cam.jpg'] if len(sys.argv[1:]) == 0 else []
+    default = ['images/cam.jpg'] if len(sys.argv[1:]) == 0 else []
     
 
     for fn in it.chain(*map(glob, default + sys.argv[1:])):
