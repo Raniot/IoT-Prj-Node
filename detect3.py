@@ -33,7 +33,7 @@ vs = stream
 fullbody_cascade = cv2.CascadeClassifier('haarcascade_fullbody.xml')
 # loop over frames from the video stream
 while True:
-
+    # rects1 = []
     if totalFrames % skip_frames == 0:
         print("Trting to detect")
         # load the image and resize it to (1) reduce detection time
@@ -91,7 +91,7 @@ while True:
             endY = int(pos.bottom())
 
 			# add the bounding box coordinates to the rectangles list
-            rects.append((startX, startY, endX, endY))
+            # rects1.append((startX, startY, endX, endY))
             cv2.rectangle(image,(startX,startY),(endX,endY),(255,0,0),2)
 
     if totalFrames % 5 == 0:
