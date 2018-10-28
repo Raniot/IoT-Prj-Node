@@ -18,7 +18,7 @@ import cv2
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
-framerate=10
+framerate=2
 resolution = (640, 480)
 
 trackers = []
