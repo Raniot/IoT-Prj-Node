@@ -77,6 +77,7 @@ while True:
 	# object detection method to aid our tracker
     if totalFrames % skip_frames == 0:
         # set the status and initialize our new set of object trackers
+        print("Detecting")
         status = "Detecting"
         trackers = []
 
@@ -96,6 +97,7 @@ while True:
 
         fullbodies = fullbody_cascade.detectMultiScale(gray, 1.3, 5)
         for (x,y,w,h) in fullbodies:
+            print("Body Found at xStart:" + str(x) + " yStart: " + str(y) + " xEnd: "+ str(x+w) + " yEnd: " + str(y+h))
             cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)
             # roi_gray = gray[y:y+h, x:x+w]
             # roi_color = img[y:y+h, x:x+w]
@@ -137,7 +139,8 @@ while True:
 	# draw a horizontal line in the center of the frame -- once an
 	# object crosses this line we will determine whether they were
 	# moving 'up' or 'down'
-    cv2.line(frame, (0, H // 2), (W, H // 2), (0, 255, 255), 2)
+    
+    # cv2.line(frame, (0, H // 2), (W, H // 2), (0, 255, 255), 2)
 
 	# use the centroid tracker to associate the (1) old object
 	# centroids with (2) the newly computed object centroids
