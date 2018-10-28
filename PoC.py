@@ -95,7 +95,7 @@ while True:
         frame = imutils.resize(frame, width=500)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-        fullbodies = fullbody_cascade.detectMultiScale(gray, 1.1, 3, None)
+        fullbodies = fullbody_cascade.detectMultiScale(gray, 1.1, 3)
         for (x,y,w,h) in fullbodies:
             print("Body Found at xStart:" + str(x) + " yStart: " + str(y) + " xEnd: "+ str(x+w) + " yEnd: " + str(y+h))
             cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)
