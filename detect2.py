@@ -21,7 +21,7 @@ framerate=10
 resolution = (640, 480)
 
 totalFrames = 0
-skip_frames = 40
+skip_frames = 120
 # initialize the picamera stream and allow the camera
 # sensor to warmup
 stream = PiVideoStream(resolution=resolution, 	framerate=framerate).start()
@@ -59,7 +59,7 @@ while True:
 
         # show the output images
         # cv2.imshow("Before NMS", orig)
-        cv2.imshow('detect',image)
+        cv2.imshow('Frame',image)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
     if totalFrames % 5 == 0:
