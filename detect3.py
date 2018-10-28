@@ -18,7 +18,7 @@ import cv2
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
-framerate=2
+framerate=10
 resolution = (640, 480)
 
 trackers = []
@@ -32,14 +32,20 @@ time.sleep(2.0)
 vs = stream
 fullbody_cascade = cv2.CascadeClassifier('haarcascade_fullbody.xml')
 # loop over frames from the video stream
+image = None
+while image is None:
+     image = vs.read()
+
 while True:
     # rects1 = []
+    image = vs.read()
+    # load the image and resize it to (1) reduce detection time
+    # and (2) improve detection accuracy
+    image = imutils.resize(image, width=min(400, image.shape[1]))
+    if image is None: continue
     if totalFrames % skip_frames == 0:
         print("Trting to detect")
-        # load the image and resize it to (1) reduce detection time
-        # and (2) improve detection accuracy
-        image = vs.read()
-        image = imutils.resize(image, width=min(400, image.shape[1]))
+
         # orig = image.copy()
 
         # detect people in the image
