@@ -86,7 +86,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		for (xA, yA, xB, yB) in pick:
 			cv2.rectangle(image, (xA, yA), (xB, yB), (0, 255, 0), 2)
 			tracker = dlib.correlation_tracker()
-			margin = 10
+			margin = 30
 			rect2 = dlib.rectangle(xA-margin, yA-margin, xB-margin, yB-margin)
 			tracker.start_track(image, rect2)
 			# add the tracker to our list of trackers so we can
