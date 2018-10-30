@@ -85,10 +85,12 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		# draw the final bounding boxes
 		for (xA, yA, xB, yB) in pick:
 			cv2.rectangle(image, (xA, yA), (xB, yB), (0, 255, 0), 2)
-			tracker = dlib.correlation_tracker()
+			# tracker = dlib.correlation_tracker()
+			tracker = cv2.TrackerBoosting_create()
 			margin = 30
-			rect2 = dlib.rectangle(xA-margin, yA-margin, xB-margin, yB-margin)
-			tracker.start_track(image, rect2)
+			# rect2 = dlib.rectangle(xA-margin, yA-margin, xB-margin, yB-margin)
+			bbox = (xA+margin, yA+margin, xB-margin, yB-margin)
+			tracker.init(image, bbox)
 			# add the tracker to our list of trackers so we can
 			# utilize it during skip frames
 			trackers.append(tracker)
@@ -101,18 +103,27 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 			#status = "Tracking"
 
 			# update the tracker and grab the updated position
-			tracker.update(image)
-			pos = tracker.get_position()
+			ok, bbox = tracker.update(image)
+			# pos = tracker.get_position()
 
-			# unpack the position object
-			startX = int(pos.left())
-			startY = int(pos.top())
-			endX = int(pos.right())
-			endY = int(pos.bottom())
+			if ok:
+				# Tracking success
+				p1 = (int(bbox[0]), int(bbox[1]))
+				p2 = (int(bbox[0] + bbox[2]), int(bbox[1] + bbox[3]))
+				cv2.rectangle(image, p1, p2, (255,0,0),2)
+			else :
+				# Tracking failure
+				print("Tracking failure detected")
 
-			# add the bounding box coordinates to the rectangles list
-			# rects1.append((startX, startY, endX, endY))
-			cv2.rectangle(image,(startX,startY),(endX,endY),(255,0,0),2)
+			# # unpack the position object
+			# startX = int(pos.left())
+			# startY = int(pos.top())
+			# endX = int(pos.right())
+			# endY = int(pos.bottom())
+
+			# # add the bounding box coordinates to the rectangles list
+			# # rects1.append((startX, startY, endX, endY))
+			# cv2.rectangle(image,(startX,startY),(endX,endY),(255,0,0),2)
 
 	# show the output images
 	# cv2.imshow("Before NMS", orig)
