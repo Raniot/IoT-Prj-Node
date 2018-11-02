@@ -51,7 +51,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 
 	cv2.accumulateWeighted(gray, avg, 0.5)
 
-	if totalFrames % args["skip_frames"] == 0:
+	if totalFrames % skip_frames == 0:
 		frameDelta = cv2.absdiff(gray, cv2.convertScaleAbs(avg))
 
 		# threshold the delta image, dilate the thresholded image to fill
