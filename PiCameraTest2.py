@@ -55,6 +55,9 @@ skip_frames = 40
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 trackers = []
+oldCenterXCoorValues = []
+newCenterXCorrValues = []
+middle = 200
 
 # capture frames from the camera
 for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
@@ -97,17 +100,33 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		
 	else:
 		# loop over the trackers
+		newCenterXCorrValues.clear()
+		i = 0
 		for tracker in trackers:
 			# set the status of our system to be 'tracking' rather
 			# than 'waiting' or 'detecting'
 			#status = "Tracking"
-
+		
 			# update the tracker and grab the updated position
 			ok, bbox = tracker.update(image)
 			# pos = tracker.get_position()
 
+			# Get id for oldCenterValueXCoor
+			
+			oldCenterXCoorValue = oldCenterXCoorValues[i]
+			i = i + 1
+
 			if ok:
 				# Tracking success
+
+				# See if the middle of the object has crossed the line.
+				centerX = np.average((bbox[0]), (bbox[2]))
+				if int(centerX > middle and oldCenterXCoorValue <= middle):
+					print("Count")
+				elif int(centerX < middle and oldCenterXCoorValue >= middle):
+					print("Count minus")
+				newCenterXCorrValues.append(centerX)
+				
 				p1 = (int(bbox[0]), int(bbox[1]))
 				p2 = (int(bbox[0] + bbox[2]), int(bbox[1] + bbox[3]))
 				cv2.rectangle(image, p1, p2, (255,0,0),2)
@@ -124,6 +143,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 			# # add the bounding box coordinates to the rectangles list
 			# # rects1.append((startX, startY, endX, endY))
 			# cv2.rectangle(image,(startX,startY),(endX,endY),(255,0,0),2)
+		oldCenterXCoorValues = newCenterXCorrValues
 
 	# show the output images
 	# cv2.imshow("Before NMS", orig)
@@ -132,6 +152,8 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		break
 	if totalFrames % 5 == 0:
 		print("Total frames: " + str(totalFrames))
+		if(oldCenterXCoorValues.count > 0):
+			print ( "center corr" + str(oldCenterXCoorValues[0]))
 	totalFrames += 1
 
 	# clear the stream in preparation for the next frame
