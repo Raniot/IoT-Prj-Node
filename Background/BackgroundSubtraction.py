@@ -88,7 +88,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		centerObj = (int(x + w/2), y + h/2)
 		centerObjs.append(centerObj)
 	
-	matches = [None] * centerObjs.count
+	matches = [None] * (int)(centerObjs.count)
 	i = 0
 	for centerObj in centerObjs:
 		D = 1000 # high distance
