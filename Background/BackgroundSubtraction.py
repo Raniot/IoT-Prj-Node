@@ -97,9 +97,13 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 			print("CenterY: " + str(centerObj[1]) + " OldCenterY: " + str(oldCenterObj[1]))
 			print(str(centerObj))
 			print(str(oldCenterObj))
-			tempD = dist.cdist(np.array(centerObj), np.array(oldCenterObj))
+			print(str(np.array(centerObj)))
+			print(str(np.array(oldCenterObj)))
+
+			tempD = dist.cdist(np.array(centerObj), np.array(oldCenterObj), 'euclidean')
 			if tempD < D: 
 				D = tempD
+				matches[i] = (centerObj, oldCenterObj)
 				matches[i] = (centerObj, oldCenterObj)
 		i = i+1
 
