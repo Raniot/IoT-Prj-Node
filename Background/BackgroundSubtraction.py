@@ -88,7 +88,8 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		centerObj = (int(x + w/2), y + h/2)
 		centerObjs.append(centerObj)
 	
-	matches = [None] * (int)(centerObjs.count)
+	# matches = [None] * (int)(centerObjs.count)
+	matches = dict()
 	i = 0
 	for centerObj in centerObjs:
 		D = 1000 # high distance
@@ -108,13 +109,12 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 			tempD = dist.euclidean(centerObj, oldCenterObj)
 			if tempD < D: 
 				D = tempD
-				matches[i] = (centerObj, oldCenterObj)
-				matches[i] = (centerObj, oldCenterObj)
+				matches[str(i)] = (centerObj, oldCenterObj)
 		i = i+1
 
-	for match in matches:
-		centerX = match[0][0]
-		oldCenterX = match[1][0]
+	for key, value in matches.items():
+		centerX = value[0][0]
+		oldCenterX = value[1][0]
 		print("CenterX: " + str(centerX) + " OldCenterX: " + str(oldCenterX))
 		if int(centerX > middle and oldCenterX <= middle):
 			print("Count")
