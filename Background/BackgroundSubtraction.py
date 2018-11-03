@@ -48,15 +48,22 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	thresh = cv2.threshold(fgmask, 5, 255, cv2.THRESH_BINARY)[1]
 
 	kernel = np.ones((5,5), np.uint8)
-	thresh = cv2.erode(thresh, kernel, iterations=3)
-	cv2.imshow('Erode',thresh)
 
 
-	thresh = cv2.dilate(thresh, None, iterations=2)
-	cv2.imshow('Dilate',thresh)
+	opening = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
+	cv2.imshow('Opening',opening)
+	closing = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel)
+	cv2.imshow('Closing',closing)
+
+	# thresh = cv2.erode(thresh, kernel, iterations=3)
+	# cv2.imshow('Erode',thresh)
+
+
+	# thresh = cv2.dilate(thresh, None, iterations=2)
+	# cv2.imshow('Dilate',thresh)
 
 	
-	cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+	cnts = cv2.findContours(closing.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 	cnts = cnts[0] if imutils.is_cv2() else cnts[1]
 
 	# loop over the contours
