@@ -40,7 +40,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	# and (2) improve detection accuracy
 
 	frame = imutils.resize(image, width=500)
-	fgmask = fgbg.apply(frame)
+	fgmask = fgbg.apply(frame, fgmask, 0.005)
 	cv2.imshow('Mask',fgmask)
 
 	# threshold the delta image, dilate the thresholded image to fill
