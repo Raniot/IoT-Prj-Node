@@ -19,9 +19,11 @@ import cv2
 warnings.filterwarnings("ignore")
 
 camera = PiCamera()
-camera.resolution = [640, 480]
+width = 640
+height = 480
+camera.resolution = [width, height]
 camera.framerate = 10
-rawCapture = PiRGBArray(camera, size=[640, 480])
+rawCapture = PiRGBArray(camera, size=[width, height])
 
 # allow the camera to warmup, then initialize the average frame, last
 # uploaded timestamp, and frame motion counter
@@ -29,7 +31,7 @@ print("[INFO] warming up...")
 time.sleep(2.5)
 totalFrames = 0
 skip_frames = 40
-middle = 200
+middle = 250
 
 centerObjs = []
 oldCenterObjs = []
@@ -112,7 +114,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 
 	oldCenterObjs = centerObjs.copy()
 		
-	cv2.line(frame, (200, 0), (200, 400), (0, 255, 255), 2)
+	cv2.line(frame, (width/2, 0), (width/2, height), (0, 255, 255), 2)
 	cv2.imshow('frame',frame)
 	if cv2.waitKey(1) & 0xFF == ord('q'):
 		break
