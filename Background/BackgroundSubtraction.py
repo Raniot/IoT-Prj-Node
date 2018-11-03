@@ -73,6 +73,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	cnts = cv2.findContours(closing.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 	cnts = cnts[0] if imutils.is_cv2() else cnts[1]
 
+	centerObjs.clear()
 	# loop over the contours
 	for c in cnts:
 		# if the contour is too small, ignore it
@@ -87,7 +88,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		centerObj = (int(x + w/2), y + h/2)
 		centerObjs.append(centerObj)
 	
-	matches =	[]
+	matches = [None] * centerObjs.count
 	i = 0
 	for centerObj in centerObjs:
 		D = 1000 # high distance
