@@ -5,6 +5,7 @@
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 from imutils.object_detection import non_max_suppression
+from scipy.spatial import distance as dist
 import numpy as np
 import argparse
 import warnings
@@ -28,6 +29,10 @@ print("[INFO] warming up...")
 time.sleep(2.5)
 totalFrames = 0
 skip_frames = 40
+middle = 200
+
+centerObjs = []
+oldCenterObjs = []
 
 avg = None
 # fgbg =  cv2.bgsegm.createBackgroundSubtractorMOG()
@@ -79,6 +84,32 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		# and update the text
 		(x, y, w, h) = cv2.boundingRect(c)
 		cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+		centerObj = (int(x + w/2), y + h/2)
+		centerObjs.append(centerObj)
+	
+	matches =	[]
+	i = 0
+	for centerObj in centerObjs:
+		D = 1000 # high distance
+		j = 0
+		for oldCenterObj in oldCenterObjs: 
+			tempD = dist.cdist(np.array(centerObj), oldCenterObj)
+			if tempD < D: 
+				D = tempD
+				matches[i] = (centerObj, oldCenterObj)
+		i = i+1
+
+	for match in matches:
+		centerX = match[0][0]
+		oldCenterX = match[1][0]
+		print("CenterX: " + str(centerX) + " OldCenterX: " + str(oldCenterX))
+		if int(centerX > middle and oldCenterX <= middle):
+			print("Count")
+		elif int(centerX < middle and oldCenterX >= middle):
+			print("Count minus")
+
+	oldCenterObjs = centerObjs
+		
 
 	cv2.imshow('frame',frame)
 	if cv2.waitKey(1) & 0xFF == ord('q'):
