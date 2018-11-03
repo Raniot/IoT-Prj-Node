@@ -65,7 +65,6 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	# thresh = cv2.erode(thresh, kernel, iterations=3)
 	# cv2.imshow('Erode',thresh)
 
-
 	# thresh = cv2.dilate(thresh, None, iterations=2)
 	# cv2.imshow('Dilate',thresh)
 
@@ -77,7 +76,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	# loop over the contours
 	for c in cnts:
 		# if the contour is too small, ignore it
-		print(str(cv2.contourArea(c)))
+		# print(str(cv2.contourArea(c)))
 		if cv2.contourArea(c) < 5000:
 			continue
 
@@ -95,17 +94,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		D = 1000 # high distance
 		j = 0
 		for oldCenterObj in oldCenterObjs:
-			# print("CenterX: " + str(centerObj[0]) + " OldCenterX: " + str(oldCenterObj[0]))
-			# print("CenterY: " + str(centerObj[1]) + " OldCenterY: " + str(oldCenterObj[1]))
-			print("Center: " + str(centerObj) + "OldCenter: " + str(oldCenterObj))
-			# print(str(oldCenterObj))
-			# print(str(np.array(centerObj)))
-			# print(str(np.array(oldCenterObj)))
-			# print(str(np.array([4, 0])))
-			# print(str(np.array([0, 3])))
-
-			# tempE = dist.euclidean(centerObj, oldCenterObj)
-			# tempD = dist.cdist(np.array(centerObj), np.array(oldCenterObj), 'euclidean')
+			# print("Center: " + str(centerObj) + "OldCenter: " + str(oldCenterObj))
 			tempD = dist.euclidean(centerObj, oldCenterObj)
 			if tempD < D: 
 				D = tempD
