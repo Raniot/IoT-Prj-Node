@@ -102,8 +102,9 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 			print(str(np.array([4, 0])))
 			print(str(np.array([0, 3])))
 
-			tempE = dist.euclidean(centerObj, oldCenterObj)
-			tempD = dist.cdist(np.array(centerObj), np.array(oldCenterObj), 'euclidean')
+			# tempE = dist.euclidean(centerObj, oldCenterObj)
+			# tempD = dist.cdist(np.array(centerObj), np.array(oldCenterObj), 'euclidean')
+			tempD = dist.euclidean(centerObj, oldCenterObj)
 			if tempD < D: 
 				D = tempD
 				matches[i] = (centerObj, oldCenterObj)
