@@ -31,7 +31,8 @@ skip_frames = 40
 
 avg = None
 # fgbg =  cv2.bgsegm.createBackgroundSubtractorMOG()
-fgbg =  cv2.createBackgroundSubtractorMOG2()
+# fgbg =  cv2.createBackgroundSubtractorMOG2()
+fgbg = cv2.createBackgroundSubtractorMOG2(128,cv2.THRESH_BINARY,1)
 # capture frames from the camera
 for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
 
@@ -40,7 +41,8 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	# and (2) improve detection accuracy
 
 	frame = imutils.resize(image, width=500)
-	fgmask = fgbg.apply(frame, fgmask, 0.005)
+	frame[frame==127]=0
+	fgmask = fgbg.apply(frame)
 	cv2.imshow('Mask',fgmask)
 
 	# threshold the delta image, dilate the thresholded image to fill
