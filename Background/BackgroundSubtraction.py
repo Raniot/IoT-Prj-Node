@@ -31,7 +31,7 @@ skip_frames = 40
 
 avg = None
 # fgbg =  cv2.bgsegm.createBackgroundSubtractorMOG()
-fgbg =  cv2.createBackgroundSubtractorMOG2(500, 16, False)
+fgbg =  cv2.createBackgroundSubtractorMOG2()
 # capture frames from the camera
 for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
 
@@ -45,12 +45,12 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 
 	# threshold the delta image, dilate the thresholded image to fill
 	# in holes, then find contours on thresholded image
-	thresh = cv2.threshold(fgmask, 5, 255, cv2.THRESH_BINARY)[1]
+	# thresh = cv2.threshold(fgmask, 5, 255, cv2.THRESH_BINARY)[1]
 
 	kernel = np.ones((5,5), np.uint8)
 
 
-	opening = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
+	opening = cv2.morphologyEx(fgmask, cv2.MORPH_OPEN, kernel)
 	cv2.imshow('Opening',opening)
 	closing = cv2.morphologyEx(opening, cv2.MORPH_CLOSE, kernel)
 	cv2.imshow('Closing',closing)
