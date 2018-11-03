@@ -46,13 +46,16 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	# threshold the delta image, dilate the thresholded image to fill
 	# in holes, then find contours on thresholded image
 	thresh = cv2.threshold(fgmask, 5, 255, cv2.THRESH_BINARY)[1]
-	thresh = cv2.dilate(thresh, None, iterations=2)
-	cv2.imshow('Dilate',thresh)
 
 	kernel = np.ones((5,5), np.uint8)
 	thresh = cv2.erode(thresh, kernel, iterations=3)
 	cv2.imshow('Erode',thresh)
 
+
+	thresh = cv2.dilate(thresh, None, iterations=2)
+	cv2.imshow('Dilate',thresh)
+
+	
 	cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 	cnts = cnts[0] if imutils.is_cv2() else cnts[1]
 
