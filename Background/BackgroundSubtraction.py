@@ -121,7 +121,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		elif int(centerX < middle and oldCenterX >= middle):
 			print("Count minus")
 
-	oldCenterObjs = centerObjs
+	oldCenterObjs = centerObjs.copy()
 		
 
 	cv2.imshow('frame',frame)
