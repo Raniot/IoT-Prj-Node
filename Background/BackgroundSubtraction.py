@@ -114,7 +114,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 
 	oldCenterObjs = centerObjs.copy()
 		
-	cv2.line(frame, (width/2, 0), (width/2, height), (0, 255, 255), 2)
+	cv2.line(frame, (int(width/2), 0), (int(width/2), height), (0, 255, 255), 2)
 	cv2.imshow('frame',frame)
 	if cv2.waitKey(1) & 0xFF == ord('q'):
 		break
