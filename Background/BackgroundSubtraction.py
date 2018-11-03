@@ -31,7 +31,7 @@ skip_frames = 40
 
 avg = None
 # fgbg =  cv2.bgsegm.createBackgroundSubtractorMOG()
-fgbg =  cv2.bgsegm.createBackgroundSubtractorMOG2(500, 16, False)
+fgbg =  cv2.createBackgroundSubtractorMOG2(500, 16, False)
 # capture frames from the camera
 for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
 
