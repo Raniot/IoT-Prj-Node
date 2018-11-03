@@ -143,7 +143,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 			cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
 
 
-	cv2.line(frame, (halfWidthAfterScale, 0), (halfWidthAfterScale, height), (0, 255, 255), 2)
+	cv2.line(frame, (int(halfWidthAfterScale), 0), (int(halfWidthAfterScale), height), (0, 255, 255), 2)
 	cv2.imshow('frame',frame)
 	if cv2.waitKey(1) & 0xFF == ord('q'):
 		break
