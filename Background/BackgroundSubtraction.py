@@ -95,14 +95,14 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		D = 1000 # high distance
 		j = 0
 		for oldCenterObj in oldCenterObjs:
-			print("CenterX: " + str(centerObj[0]) + " OldCenterX: " + str(oldCenterObj[0]))
-			print("CenterY: " + str(centerObj[1]) + " OldCenterY: " + str(oldCenterObj[1]))
-			print(str(centerObj))
-			print(str(oldCenterObj))
-			print(str(np.array(centerObj)))
-			print(str(np.array(oldCenterObj)))
-			print(str(np.array([4, 0])))
-			print(str(np.array([0, 3])))
+			# print("CenterX: " + str(centerObj[0]) + " OldCenterX: " + str(oldCenterObj[0]))
+			# print("CenterY: " + str(centerObj[1]) + " OldCenterY: " + str(oldCenterObj[1]))
+			print("Center: " + str(centerObj) + "OldCenter: " + str(oldCenterObj))
+			# print(str(oldCenterObj))
+			# print(str(np.array(centerObj)))
+			# print(str(np.array(oldCenterObj)))
+			# print(str(np.array([4, 0])))
+			# print(str(np.array([0, 3])))
 
 			# tempE = dist.euclidean(centerObj, oldCenterObj)
 			# tempD = dist.cdist(np.array(centerObj), np.array(oldCenterObj), 'euclidean')
@@ -127,7 +127,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	cv2.imshow('frame',frame)
 	if cv2.waitKey(1) & 0xFF == ord('q'):
 		break
-	if totalFrames % 5 == 0:
+	if totalFrames % 50 == 0:
 		print("Total frames: " + str(totalFrames))
 	totalFrames += 1
 
