@@ -52,7 +52,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 
 	opening = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
 	cv2.imshow('Opening',opening)
-	closing = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel)
+	closing = cv2.morphologyEx(opening, cv2.MORPH_CLOSE, kernel)
 	cv2.imshow('Closing',closing)
 
 	# thresh = cv2.erode(thresh, kernel, iterations=3)
