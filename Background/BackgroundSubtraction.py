@@ -50,7 +50,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	cv2.imshow('Dilate',thresh)
 
 	kernel = np.ones((5,5), np.uint8)
-	thresh = cv2.erode(thresh, kernel, iterations=1)
+	thresh = cv2.erode(thresh, kernel, iterations=3)
 	cv2.imshow('Erode',thresh)
 
 	cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
