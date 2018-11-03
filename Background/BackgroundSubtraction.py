@@ -21,6 +21,12 @@ warnings.filterwarnings("ignore")
 camera = PiCamera()
 width = 640
 height = 480
+
+widthAfterScale = None
+heightAfterScale = None
+halfWidthAfterScale = None
+
+
 camera.resolution = [width, height]
 camera.framerate = 10
 rawCapture = PiRGBArray(camera, size=[width, height])
@@ -31,12 +37,12 @@ print("[INFO] warming up...")
 time.sleep(2.5)
 totalFrames = 0
 skip_frames = 40
-middle = 250
+enterSofa = 0
+leaveSofa = 0
 
 centerObjs = []
 oldCenterObjs = []
 
-avg = None
 # fgbg =  cv2.bgsegm.createBackgroundSubtractorMOG()
 # fgbg =  cv2.createBackgroundSubtractorMOG2()
 fgbg = cv2.createBackgroundSubtractorMOG2(128,cv2.THRESH_BINARY,1)
@@ -48,6 +54,12 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	# and (2) improve detection accuracy
 
 	frame = imutils.resize(image, width=500)
+
+	if widthAfterScale is None or heightAfterScale is None or halfWidthAfterScale is None:
+		(heightAfterScale, widthAfterScale) = frame.shape[:2]
+		halfWidthAfterScale = widthAfterScale/2
+	
+
 	fgmask = fgbg.apply(frame)
 	fgmask[fgmask==127]=0
 	cv2.imshow('Mask',fgmask)
@@ -107,14 +119,31 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		centerX = value[0][0]
 		oldCenterX = value[1][0]
 		print("CenterX: " + str(centerX) + " OldCenterX: " + str(oldCenterX))
-		if int(centerX > middle and oldCenterX <= middle):
+		if int(centerX > halfWidthAfterScale and oldCenterX <= halfWidthAfterScale):
 			print("Count")
-		elif int(centerX < middle and oldCenterX >= middle):
+			enterSofa = enterSofa + 1
+		elif int(centerX < halfWidthAfterScale and oldCenterX >= halfWidthAfterScale):
 			print("Count minus")
+			leaveSofa = leaveSofa + 1
+
 
 	oldCenterObjs = centerObjs.copy()
-		
-	cv2.line(frame, (middle, 0), (middle, height), (0, 255, 255), 2)
+
+	# construct a tuple of information we will be displaying on the
+	# frame
+	info = [
+		("Enter Sofa", enterSofa),
+		("Leave Sofa", leaveSofa),
+	]
+
+	# loop over the info tuples and draw them on our frame
+	for (i, (k, v)) in enumerate(info):
+		text = "{}: {}".format(k, v)
+		cv2.putText(frame, text, (10, H - ((i * 20) + 20)),
+			cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+
+
+	cv2.line(frame, (halfWidthAfterScale, 0), (halfWidthAfterScale, height), (0, 255, 255), 2)
 	cv2.imshow('frame',frame)
 	if cv2.waitKey(1) & 0xFF == ord('q'):
 		break
