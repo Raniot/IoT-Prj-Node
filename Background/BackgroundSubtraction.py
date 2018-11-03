@@ -62,7 +62,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 
 	fgmask = fgbg.apply(frame)
 	fgmask[fgmask==127]=0
-	cv2.imshow('Mask',fgmask)
+	# cv2.imshow('Mask',fgmask)
 
 	# threshold the delta image, dilate the thresholded image to fill
 	# in holes, then find contours on thresholded image
@@ -72,9 +72,9 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 
 
 	opening = cv2.morphologyEx(fgmask, cv2.MORPH_OPEN, kernel)
-	cv2.imshow('Opening',opening)
+	# cv2.imshow('Opening',opening)
 	closing = cv2.morphologyEx(opening, cv2.MORPH_CLOSE, kernel)
-	cv2.imshow('Closing',closing)
+	# cv2.imshow('Closing',closing)
 
 	# thresh = cv2.erode(thresh, kernel, iterations=3)
 	# cv2.imshow('Erode',thresh)
