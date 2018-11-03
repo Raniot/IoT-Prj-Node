@@ -139,7 +139,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	# loop over the info tuples and draw them on our frame
 	for (i, (k, v)) in enumerate(info):
 		text = "{}: {}".format(k, v)
-		cv2.putText(frame, text, (10, H - ((i * 20) + 20)),
+		cv2.putText(frame, text, (10, heightAfterScale - ((i * 20) + 20)),
 			cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
 
 
