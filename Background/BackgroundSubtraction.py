@@ -93,7 +93,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		D = 1000 # high distance
 		j = 0
 		for oldCenterObj in oldCenterObjs: 
-			tempD = dist.cdist(centerObj, oldCenterObj)
+			tempD = dist.cdist(np.array(centerObj), np.array(oldCenterObj))
 			if tempD < D: 
 				D = tempD
 				matches[i] = (centerObj, oldCenterObj)
