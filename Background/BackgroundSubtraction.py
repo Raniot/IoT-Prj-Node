@@ -92,7 +92,11 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	for centerObj in centerObjs:
 		D = 1000 # high distance
 		j = 0
-		for oldCenterObj in oldCenterObjs: 
+		for oldCenterObj in oldCenterObjs:
+			print("CenterX: " + str(centerObj[0]) + " OldCenterX: " + str(oldCenterObj[0]))
+			print("CenterY: " + str(centerObj[1]) + " OldCenterY: " + str(oldCenterObj[1]))
+			print(str(centerObj))
+			print(str(oldCenterObj))
 			tempD = dist.cdist(np.array(centerObj), np.array(oldCenterObj))
 			if tempD < D: 
 				D = tempD
