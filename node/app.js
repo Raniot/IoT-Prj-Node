@@ -7,13 +7,20 @@ const pythonProcess = spawn('python',["script.py"]);
 
 var people = 0
 
+// pythonProcess.stdout.on('data', (data) => {
+//   // Do something with the data returned from python script
+
+//   var integer = parseInt(data);
+//   people += integer
+//   // console.log(data.toString());
+//   // test = data.toString()
+// });
+
 pythonProcess.stdout.on('data', (data) => {
   // Do something with the data returned from python script
-
+  // console.log(data.toString());
   var integer = parseInt(data);
   people += integer
-  // console.log(data.toString());
-  // test = data.toString()
 });
 
 
