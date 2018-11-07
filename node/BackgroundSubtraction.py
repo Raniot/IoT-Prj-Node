@@ -110,8 +110,11 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	for centerObj in centerObjs:
 		D = 1000 # high distance
 		j = 0
+		print("100")
+		sys.stdout.flush()
 		for oldCenterObj in oldCenterObjs:
 			# print("Center: " + str(centerObj) + "OldCenter: " + str(oldCenterObj))
+			
 			tempD = dist.euclidean(centerObj, oldCenterObj)
 			if tempD < D: 
 				D = tempD
@@ -156,5 +159,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		# print("Total frames: " + str(totalFrames))
 	totalFrames += 1
 
+	print("1")
+	sys.stdout.flush()
 	# clear the stream in preparation for the next frame
 	rawCapture.truncate(0)
