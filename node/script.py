@@ -8,11 +8,11 @@ def printit():
   test = random.randint(0, 2)
   threading.Timer(3.0, printit).start()
   if (test == 1):
-    print("Hello, World!")
+    print("1")
   elif (test == 2):
-    print("Hello, Python!")
+    print("-1")
   else:
-    print("test2")
+    print("1")
 
   sys.stdout.flush()
 

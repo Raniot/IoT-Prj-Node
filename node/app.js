@@ -3,7 +3,7 @@ const app = express()
 const port = 3000
 
 const spawn = require("child_process").spawn;
-const pythonProcess = spawn('python',["BackgroundSubtraction.py"]);
+const pythonProcess = spawn('python',["script.py"]);
 
 var people = 0
 
