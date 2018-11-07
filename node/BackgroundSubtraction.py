@@ -35,8 +35,6 @@ rawCapture = PiRGBArray(camera, size=[width, height])
 # allow the camera to warmup, then initialize the average frame, last
 # uploaded timestamp, and frame motion counter
 # print("[INFO] warming up...")
-print("10")
-sys.stdout.flush()
 time.sleep(2.5)
 totalFrames = 0
 skip_frames = 40
@@ -50,9 +48,6 @@ oldCenterObjs = []
 # fgbg =  cv2.createBackgroundSubtractorMOG2()
 fgbg = cv2.createBackgroundSubtractorMOG2(128,cv2.THRESH_BINARY,1)
 # capture frames from the camera
-
-print("10")
-sys.stdout.flush()
 for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
 
 	image = f.array
@@ -65,8 +60,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		(heightAfterScale, widthAfterScale) = frame.shape[:2]
 		halfWidthAfterScale = widthAfterScale/2
 	
-	print("10")
-	sys.stdout.flush()
+
 	fgmask = fgbg.apply(frame)
 	fgmask[fgmask==127]=0
 	# cv2.imshow('Mask',fgmask)
@@ -92,15 +86,12 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	
 	cnts = cv2.findContours(closing.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 	cnts = cnts[0] if imutils.is_cv2() else cnts[1]
-	print("10")
-	sys.stdout.flush()
+
 	centerObjs.clear()
 	# loop over the contours
 	for c in cnts:
 		# if the contour is too small, ignore it
 		# print(str(cv2.contourArea(c)))
-		print("5")
-		sys.stdout.flush()
 		if cv2.contourArea(c) < 5000:
 			continue
 
@@ -117,11 +108,8 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	for centerObj in centerObjs:
 		D = 1000 # high distance
 		j = 0
-		print("100")
-		sys.stdout.flush()
 		for oldCenterObj in oldCenterObjs:
 			# print("Center: " + str(centerObj) + "OldCenter: " + str(oldCenterObj))
-			
 			tempD = dist.euclidean(centerObj, oldCenterObj)
 			if tempD < D: 
 				D = tempD
@@ -166,7 +154,5 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		# print("Total frames: " + str(totalFrames))
 	totalFrames += 1
 
-	print("1")
-	sys.stdout.flush()
 	# clear the stream in preparation for the next frame
 	rawCapture.truncate(0)
