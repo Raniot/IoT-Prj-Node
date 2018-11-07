@@ -1,14 +1,6 @@
 FROM raniot/rpiopencv:latest
 # Install some extra packages to make sure we can build and "npm install" our dependencies later
-RUN apk add --no-cache curl gcc g++ make python2 && \
- mkdir -p /usr/src && \
- curl -s http://www.airspayce.com/mikem/bcm2835/bcm2835-1.56.tar.gz | tar -C /usr/src -xvz && \
- cd /usr/src/bcm2835-1.56 && \
- ./configure --prefix=/usr && \
- make && \
- make install && \
- rm -rf /usr/src/bcm2835-1.56 && \
- apk del curl
+RUN apt-get install npm
 
 # Create app directory
 WORKDIR /usr/src/app
