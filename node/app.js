@@ -16,7 +16,7 @@ var people = 0
 //   // test = data.toString()
 // });
 
-pythonProcess.stdout.on('data', (data) => {
+pythonProcess.stdout.on('data', function(data) {
   // Do something with the data returned from python script
   // console.log(data.toString());
   var integer = parseInt(data);
@@ -24,9 +24,9 @@ pythonProcess.stdout.on('data', (data) => {
 });
 
 
-app.get('/', (req, res) => {
+app.get('/', function(req, res) {
 	res.send('Amount of people: ' + people.toString())
 })
 
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, function() console.log(`Example app listening on port ${port}!`))
