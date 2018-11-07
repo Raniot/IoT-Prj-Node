@@ -35,6 +35,8 @@ rawCapture = PiRGBArray(camera, size=[width, height])
 # allow the camera to warmup, then initialize the average frame, last
 # uploaded timestamp, and frame motion counter
 # print("[INFO] warming up...")
+print("10")
+sys.stdout.flush()
 time.sleep(2.5)
 totalFrames = 0
 skip_frames = 40

@@ -8,6 +8,7 @@ const pythonProcess = spawn('python',["BackgroundSubtraction.py"]);
 var people = 0
 
 pythonProcess.stdout.on('data', function(data) {
+  console.log(data.toString());
   var integer = parseInt(data);
   people += integer
 });
