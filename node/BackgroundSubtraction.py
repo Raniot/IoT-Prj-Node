@@ -50,6 +50,9 @@ oldCenterObjs = []
 # fgbg =  cv2.createBackgroundSubtractorMOG2()
 fgbg = cv2.createBackgroundSubtractorMOG2(128,cv2.THRESH_BINARY,1)
 # capture frames from the camera
+
+print("10")
+sys.stdout.flush()
 for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
 
 	image = f.array
@@ -62,7 +65,8 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		(heightAfterScale, widthAfterScale) = frame.shape[:2]
 		halfWidthAfterScale = widthAfterScale/2
 	
-
+	print("10")
+	sys.stdout.flush()
 	fgmask = fgbg.apply(frame)
 	fgmask[fgmask==127]=0
 	# cv2.imshow('Mask',fgmask)
@@ -88,12 +92,15 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	
 	cnts = cv2.findContours(closing.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 	cnts = cnts[0] if imutils.is_cv2() else cnts[1]
-
+	print("10")
+	sys.stdout.flush()
 	centerObjs.clear()
 	# loop over the contours
 	for c in cnts:
 		# if the contour is too small, ignore it
 		# print(str(cv2.contourArea(c)))
+		print("5")
+		sys.stdout.flush()
 		if cv2.contourArea(c) < 5000:
 			continue
 
