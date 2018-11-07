@@ -15,6 +15,7 @@ import dlib
 import json
 import time
 import cv2
+import sys
 
 warnings.filterwarnings("ignore")
 
@@ -121,9 +122,11 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		# print("CenterX: " + str(centerX) + " OldCenterX: " + str(oldCenterX))
 		if int(centerX > halfWidthAfterScale and oldCenterX <= halfWidthAfterScale):
 			print("1")
+			sys.stdout.flush()
 			enterSofa = enterSofa + 1
 		elif int(centerX < halfWidthAfterScale and oldCenterX >= halfWidthAfterScale):
 			print("-1")
+			sys.stdout.flush()
 			leaveSofa = leaveSofa + 1
 
 
