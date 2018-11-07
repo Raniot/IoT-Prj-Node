@@ -10,7 +10,7 @@ var people = 0
 pythonProcess.stdout.on('data', (data) => {
   // Do something with the data returned from python script
 
-  var integer = parseInt(text, 10);
+  var integer = parseInt(data);
   people += integer
   // console.log(data.toString());
   // test = data.toString()
