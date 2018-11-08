@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const port = 3000
 var mqtt = require('mqtt');
-var client  = mqtt.connect('mqtt://192.168.0.114:2000');
+var client  = mqtt.connect('mqtt://84.238.67.87:2000');
 
 const spawn = require("child_process").spawn;
 const pythonProcess = spawn('python3',["BackgroundSubtraction.py"]);
@@ -14,22 +14,16 @@ pythonProcess.stdout.on('data', function(data) {
   var integer = parseInt(data);
   people += integer
   
-  message = '{"Sensors": [ { "Type": "Visitors", "Value": '+ integer +', "Unit": "humans" } ] }';
+  message = '{"Sensors": [ { "Type": "Human counter", "Value": '+ integer +', "Unit": "humans" } ] }';
 
-  jsonMessage = JSON.stringify(message)
-    client.publish('Gateway/message', jsonMessage); 
-    console.log('Message Sent');
+  jsonMessage = JSON.parse(message)
+  client.publish('Gateway/message', jsonMessage); 
+  console.log('Message Sent');
 });
-
-
-jsonMessage = JSON.stringify(message)
-client.publish('Gateway/message', jsonMessage); 
-console.log('Message Sent');
 
 app.get('/', function(req, res) {
 	res.send('Amount of people: ' + people.toString())
 })
-
 
 app.listen(port, function() {
   console.log('Example app listening on port: '+ port.toString())
