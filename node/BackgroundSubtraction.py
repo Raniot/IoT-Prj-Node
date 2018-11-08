@@ -88,7 +88,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		# and update the text
 		(x, y, w, h) = cv2.boundingRect(c)
 		cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-		centerObj = (int(x + w/2), y + h/2)
+		centerObj = (int(x + w/2), int(y + h/2))
 		centerObjs.append(centerObj)
 	
 
