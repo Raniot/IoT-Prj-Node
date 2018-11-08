@@ -1,6 +1,3 @@
-# USAGE
-# python pi_surveillance.py --conf conf.json
-
 # import the necessary packages
 from picamera.array import PiRGBArray
 from picamera import PiCamera
@@ -17,6 +14,19 @@ import time
 import cv2
 import sys
 
+def parseArguments():
+	parser = argparse.ArgumentParser()
+	parser.add_argument("-v", "--verbose", help="Tell if script should verbose print", type=bool, default=False)
+	# Parse arguments
+	args = parser.parse_args()
+
+	return args
+
+args = parseArguments()
+
+VERBOSE = args.verbose
+print('Verbose: ' + str(VERBOSE))
+
 warnings.filterwarnings("ignore")
 
 camera = PiCamera()
@@ -32,9 +42,7 @@ camera.resolution = [width, height]
 camera.framerate = 10
 rawCapture = PiRGBArray(camera, size=[width, height])
 
-# allow the camera to warmup, then initialize the average frame, last
-# uploaded timestamp, and frame motion counter
-# print("[INFO] warming up...")
+# allow the camera to warmup
 time.sleep(2.5)
 totalFrames = 0
 skip_frames = 40
@@ -44,8 +52,6 @@ leaveSofa = 0
 centerObjs = []
 oldCenterObjs = []
 
-# fgbg =  cv2.bgsegm.createBackgroundSubtractorMOG()
-# fgbg =  cv2.createBackgroundSubtractorMOG2()
 fgbg = cv2.createBackgroundSubtractorMOG2(128,cv2.THRESH_BINARY,1)
 # capture frames from the camera
 for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
@@ -59,30 +65,13 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	if widthAfterScale is None or heightAfterScale is None or halfWidthAfterScale is None:
 		(heightAfterScale, widthAfterScale) = frame.shape[:2]
 		halfWidthAfterScale = widthAfterScale/2
-	
 
 	fgmask = fgbg.apply(frame)
 	fgmask[fgmask==127]=0
-	# cv2.imshow('Mask',fgmask)
-
-	# threshold the delta image, dilate the thresholded image to fill
-	# in holes, then find contours on thresholded image
-	# thresh = cv2.threshold(fgmask, 5, 255, cv2.THRESH_BINARY)[1]
 
 	kernel = np.ones((5,5), np.uint8)
-
-
 	opening = cv2.morphologyEx(fgmask, cv2.MORPH_OPEN, kernel)
-	# cv2.imshow('Opening',opening)
 	closing = cv2.morphologyEx(opening, cv2.MORPH_CLOSE, kernel)
-	# cv2.imshow('Closing',closing)
-
-	# thresh = cv2.erode(thresh, kernel, iterations=3)
-	# cv2.imshow('Erode',thresh)
-
-	# thresh = cv2.dilate(thresh, None, iterations=2)
-	# cv2.imshow('Dilate',thresh)
-
 	
 	cnts = cv2.findContours(closing.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 	cnts = cnts[0] if imutils.is_cv2() else cnts[1]
@@ -91,7 +80,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	# loop over the contours
 	for c in cnts:
 		# if the contour is too small, ignore it
-		# print(str(cv2.contourArea(c)))
+		if VERBOSE: print(str(cv2.contourArea(c)))
 		if cv2.contourArea(c) < 5000:
 			continue
 
@@ -109,7 +98,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		D = 1000 # high distance
 		j = 0
 		for oldCenterObj in oldCenterObjs:
-			# print("Center: " + str(centerObj) + "OldCenter: " + str(oldCenterObj))
+			if VERBOSE: print("Center: " + str(centerObj) + "OldCenter: " + str(oldCenterObj))
 			tempD = dist.euclidean(centerObj, oldCenterObj)
 			if tempD < D: 
 				D = tempD
@@ -119,7 +108,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	for key, value in matches.items():
 		centerX = value[0][0]
 		oldCenterX = value[1][0]
-		# print("CenterX: " + str(centerX) + " OldCenterX: " + str(oldCenterX))
+		if VERBOSE: print("CenterX: " + str(centerX) + " OldCenterX: " + str(oldCenterX))
 		if int(centerX > halfWidthAfterScale and oldCenterX <= halfWidthAfterScale):
 			print("1")
 			sys.stdout.flush()
@@ -150,8 +139,9 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	cv2.imshow('frame',frame)
 	if cv2.waitKey(1) & 0xFF == ord('q'):
 		break
-	# if totalFrames % 50 == 0:
-		# print("Total frames: " + str(totalFrames))
+	if VERBOSE: 
+		if totalFrames % 50 == 0:
+			print("Total frames: " + str(totalFrames))
 	totalFrames += 1
 
 	# clear the stream in preparation for the next frame

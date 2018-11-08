@@ -16,8 +16,8 @@ pythonProcess.stdout.on('data', function(data) {
   
   message = '{"Sensors": [ { "Type": "Human counter", "Value": '+ integer +', "Unit": "humans" } ] }';
 
-  //jsonMessage = JSON.parse(message)
-  client.publish('Gateway/message', message); 
+  //COMMENT IN TO SEND TO MQTT
+  // client.publish('Gateway/message', message); 
   console.log('Message Sent');
 });
 
