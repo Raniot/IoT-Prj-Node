@@ -110,7 +110,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	matches = dict()
 	i = 0
 
-	if len(oldCenterObjs) != 0:
+	if len(oldCenterObjs) != 0 and len(centerObjs) != 0:
 
 
 		# test = np.array([[0.59, 1.23], [0.89, 1.67], [0.21,0.99]])
