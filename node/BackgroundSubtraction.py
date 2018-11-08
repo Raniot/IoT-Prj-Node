@@ -1,31 +1,32 @@
 # import the necessary packages
-from picamera.array import PiRGBArray
-from picamera import PiCamera
-from imutils.object_detection import non_max_suppression
-from scipy.spatial import distance as dist
-import numpy as np
 import argparse
-import warnings
 import datetime
-import imutils
-import dlib
 import json
-import time
-import cv2
 import sys
+import time
+import warnings
+
+import cv2
+import dlib
+import imutils
+import numpy as np
+from imutils.object_detection import non_max_suppression
+from picamera import PiCamera
+from picamera.array import PiRGBArray
+from scipy.spatial import distance as dist
+
 
 def parseArguments():
 	parser = argparse.ArgumentParser()
-	parser.add_argument("-v", "--verbose", help="Tell if script should verbose print", type=bool, default=False)
+	parser.add_argument("-v", "--verbose", help="Enable Verbose", type=bool, default=False)
 	# Parse arguments
 	args = parser.parse_args()
 
 	return args
 
+# get arguments
 args = parseArguments()
-
 VERBOSE = args.verbose
-print('Verbose: ' + str(VERBOSE))
 
 warnings.filterwarnings("ignore")
 
@@ -37,7 +38,6 @@ widthAfterScale = None
 heightAfterScale = None
 halfWidthAfterScale = None
 
-
 camera.resolution = [width, height]
 camera.framerate = 10
 rawCapture = PiRGBArray(camera, size=[width, height])
@@ -46,8 +46,8 @@ rawCapture = PiRGBArray(camera, size=[width, height])
 time.sleep(2.5)
 totalFrames = 0
 skip_frames = 40
-enterSofa = 0
-leaveSofa = 0
+enterArea = 0
+leaveArea = 0
 
 centerObjs = []
 oldCenterObjs = []
@@ -91,41 +91,115 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		centerObj = (int(x + w/2), y + h/2)
 		centerObjs.append(centerObj)
 	
-	# matches = [None] * (int)(centerObjs.count)
+
+	# # Find matches between objects and the obejcts observed in previous frame. 
+	# matches = dict()
+	# i = 0
+	# for centerObj in centerObjs:
+	# 	D = 1000 # high distance
+	# 	j = 0
+	# 	for oldCenterObj in oldCenterObjs:
+	# 		if VERBOSE: print("Center: " + str(centerObj) + "OldCenter: " + str(oldCenterObj))
+	# 		tempD = dist.euclidean(centerObj, oldCenterObj)
+	# 		if tempD < D: 
+	# 			D = tempD
+	# 			matches[str(i)] = (centerObj, oldCenterObj)
+	# 	i = i+1
+
+	# Find matches between objects and the obejcts observed in previous frame. 
 	matches = dict()
 	i = 0
-	for centerObj in centerObjs:
-		D = 1000 # high distance
-		j = 0
-		for oldCenterObj in oldCenterObjs:
-			if VERBOSE: print("Center: " + str(centerObj) + "OldCenter: " + str(oldCenterObj))
-			tempD = dist.euclidean(centerObj, oldCenterObj)
-			if tempD < D: 
-				D = tempD
-				matches[str(i)] = (centerObj, oldCenterObj)
-		i = i+1
 
-	for key, value in matches.items():
-		centerX = value[0][0]
-		oldCenterX = value[1][0]
-		if VERBOSE: print("CenterX: " + str(centerX) + " OldCenterX: " + str(oldCenterX))
-		if int(centerX > halfWidthAfterScale and oldCenterX <= halfWidthAfterScale):
-			print("1")
-			sys.stdout.flush()
-			enterSofa = enterSofa + 1
-		elif int(centerX < halfWidthAfterScale and oldCenterX >= halfWidthAfterScale):
-			print("-1")
-			sys.stdout.flush()
-			leaveSofa = leaveSofa + 1
+	if len(oldCenterObjs) != 0:
+		D = dist.cdist(np.array(oldCenterObjs), centerObjs)
+		rows = D.min(axis=1).argsort()
+		cols = D.argmin(axis=1)[rows]
+		usedRows = set()
+		usedCols = set()
 
+		for (row, col) in zip(rows, cols):
+				# if we have already examined either the row or
+				# column value before, ignore it
+				if row in usedRows or col in usedCols:
+					continue
+
+				# if the distance between centroids is greater than
+				# the maximum distance, do not associate the two
+				# centroids to the same object
+				maxDistance = 200
+				if D[row, col] > maxDistance:
+					continue
+
+				
+				
+				centerX = centerObjs[col][0]
+				oldCenterX = oldCenterObjs[row][0]
+				if int(centerX > halfWidthAfterScale and oldCenterX <= halfWidthAfterScale):
+					print("1")
+					sys.stdout.flush()
+					enterArea = enterArea + 1
+				elif int(centerX < halfWidthAfterScale and oldCenterX >= halfWidthAfterScale):
+					print("-1")
+					sys.stdout.flush()
+					leaveArea = leaveArea + 1
+
+				# indicate that we have examined each of the row and
+				# column indexes, respectively
+				usedRows.add(row)
+				usedCols.add(col)
+
+
+		# compute both the row and column index we have NOT yet
+		# examined
+		unusedRows = set(range(0, D.shape[0])).difference(usedRows)
+		unusedCols = set(range(0, D.shape[1])).difference(usedCols)
+
+		# in the event that the number of object centroids is
+		# equal or greater than the number of input centroids
+		# we need to check and see if some of these objects have
+		# potentially disappeared
+		# if D.shape[0] >= D.shape[1]:
+			# loop over the unused row indexes
+			# for row in unusedRows:
+				# grab the object ID for the corresponding row
+				# index and increment the disappeared counter
+			# objectID = objectIDs[row]
+			# self.disappeared[objectID] += 1
+
+				# check to see if the number of consecutive
+				# frames the object has been marked "disappeared"
+				# for warrants deregistering the object
+			# if self.disappeared[objectID] > self.maxDisappeared:
+			# 	self.deregister(objectID)
+
+		# otherwise, if the number of input centroids is greater
+		# than the number of existing object centroids we need to
+		# register each new input centroid as a trackable object
+		# else:
+		# 	for col in unusedCols:
+			# self.register(inputCentroids[col])
+
+
+		# See if the object has crossed the middle from the last frame to the current frame
+		# for key, value in matches.items():
+		# 	centerX = value[0][0]
+		# 	oldCenterX = value[1][0]
+		# 	if VERBOSE: print("CenterX: " + str(centerX) + " OldCenterX: " + str(oldCenterX))
+		# 	if int(centerX > halfWidthAfterScale and oldCenterX <= halfWidthAfterScale):
+		# 		print("1")
+		# 		sys.stdout.flush()
+		# 		enterArea = enterArea + 1
+		# 	elif int(centerX < halfWidthAfterScale and oldCenterX >= halfWidthAfterScale):
+		# 		print("-1")
+		# 		sys.stdout.flush()
+		# 		leaveArea = leaveArea + 1
 
 	oldCenterObjs = centerObjs.copy()
 
-	# construct a tuple of information we will be displaying on the
-	# frame
+	# construct a tuple of information to be displayed
 	info = [
-		("Enter Sofa", enterSofa),
-		("Leave Sofa", leaveSofa),
+		("Enter Area", enterArea),
+		("Leave Area", leaveArea),
 	]
 
 	# loop over the info tuples and draw them on our frame
