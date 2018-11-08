@@ -112,16 +112,6 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 
 	if len(oldCenterObjs) != 0 and len(centerObjs) != 0:
 
-
-		# test = np.array([[0.59, 1.23], [0.89, 1.67], [0.21,0.99]])
-		# D = dist.cdist(test, test)
-
-		print(oldCenterObjs)
-		print(centerObjs)
-		print(np.array(oldCenterObjs))
-		print(np.array(centerObjs))
-
-
 		D = dist.cdist(np.array(oldCenterObjs), np.array(centerObjs))
 		rows = D.min(axis=1).argsort()
 		cols = D.argmin(axis=1)[rows]
