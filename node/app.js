@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const port = 3000
 var mqtt = require('mqtt');
-var client  = mqtt.connect('mqtt://84.238.67.87:2000');
+var client  = mqtt.connect('mqtt://84.238.54.119:3000');
 
 const spawn = require("child_process").spawn;
 const pythonProcess = spawn('python3',["BackgroundSubtraction.py"]);
