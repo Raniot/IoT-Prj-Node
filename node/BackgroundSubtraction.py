@@ -39,7 +39,7 @@ heightAfterScale = None
 halfWidthAfterScale = None
 
 camera.resolution = [width, height]
-camera.framerate = 10
+camera.framerate = 30
 rawCapture = PiRGBArray(camera, size=[width, height])
 
 # allow the camera to warmup
