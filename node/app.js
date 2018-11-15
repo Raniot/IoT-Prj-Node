@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const port = 3000
 var mqtt = require('mqtt');
-var client  = mqtt.connect('mqtt://84.238.54.119:3000');
+var client  = mqtt.connect('mqtt://84.238.67.87:2000');
 
 const spawn = require("child_process").spawn;
 const pythonProcess = spawn('python3',["BackgroundSubtraction.py"]);
@@ -17,7 +17,7 @@ pythonProcess.stdout.on('data', function(data) {
   message = '{"Sensors": [ { "Type": "Human counter", "Value": '+ integer +', "Unit": "humans" } ] }';
 
   //COMMENT IN TO SEND TO MQTT
-  // client.publish('Gateway/message', message); 
+  client.publish('Gateway/message', message); 
   console.log('Message Sent');
 });
 
